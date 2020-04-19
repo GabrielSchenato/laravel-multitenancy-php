@@ -15,18 +15,29 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => 'app', 'as' => 'app.', 'namespace' => 'App'], function () {
-    Auth::routes(['register' => false]); //app.login
-    Route::group(['middleware' => ['auth', 'tenant', 'bindings']], function () {
-        Route::get('dashboard', function () {
-            return view('app.dashboard');
+Route::group(['prefix' => 'app', 'as' => 'app.'], function () {
+
+    Route::group(['namespace' => 'App'], function () {
+        Route::group(['middleware' => ['auth', 'tenant', 'bindings']], function () {
+            Route::get('dashboard', function () {
+                return view('app.dashboard');
+            });
+            Route::resource('categories', 'CategoryController');
+            Route::resource('products', 'ProductController');
         });
-        Route::resource('categories', 'CategoryController');
-        Route::resource('products', 'ProductController');
     });
+    Auth::routes(['register' => false]);
+});
+
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::group(['namespace' => 'Admin'], function () {
+        Route::group(['middleware' => ['auth', 'bindings']], function () {
+            Route::get('dashboard', function () {
+                return view('app.dashboard');
+            });
+        });
+    });
+    Auth::routes(['register' => false]);
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-//Classe::metodo1()
-//Facade - Design Pattern

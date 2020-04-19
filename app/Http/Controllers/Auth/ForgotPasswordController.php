@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\_Auth;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
