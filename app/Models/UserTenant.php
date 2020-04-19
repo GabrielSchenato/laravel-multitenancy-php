@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserTenant extends Model
 {
-    use TenantModels;
+    use TenantModels, Uuid;
     public static function createUser(array $attributes)
     {
         $admin = self::create([]);
