@@ -15,7 +15,6 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        \Tenant::setTenant(Company::find(1));
         $users = factory(\App\Models\User::class, 1)
             ->make([
                 'email' => 'admin@user.com',

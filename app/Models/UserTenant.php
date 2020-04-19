@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Tenant\TenantModels;
 use Illuminate\Database\Eloquent\Model;
 
 class UserTenant extends Model
 {
+    use TenantModels;
     public static function createUser(array $attributes)
     {
         $admin = self::create([]);
