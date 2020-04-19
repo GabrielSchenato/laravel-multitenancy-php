@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->integer('company_id')->unsigned();
             $table->foreign('company_id')->references('id')->on('companies');
+            $table->nullableMorphs('userable');
             $table->timestamps();
         });
     }
