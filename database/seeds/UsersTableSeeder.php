@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder
         \Tenant::setTenant(Company::find(1));
         $users = factory(\App\Models\User::class, 1)
             ->make([
-                'email' => 'user1@user.com',
+                'email' => 'admin@user.com',
             ]);
         foreach ($users as $user) {
             Admin::createUser([
@@ -29,7 +29,7 @@ class UsersTableSeeder extends Seeder
         \Tenant::setTenant(Company::find(2));
         $users = factory(\App\Models\User::class, 1)
             ->make([
-                'email' => 'user2@user.com',
+                'email' => 'user1@user.com',
             ]);
         foreach ($users as $user) {
             UserTenant::createUser([
@@ -40,7 +40,7 @@ class UsersTableSeeder extends Seeder
         \Tenant::setTenant(Company::find(3));
         $users = factory(\App\Models\User::class, 1)
             ->make([
-                'email' => 'user3@user.com',
+                'email' => 'user2@user.com',
             ]);
         foreach ($users as $user) {
             UserTenant::createUser([
