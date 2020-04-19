@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Request;
+use \Section;
 
 class LoginController extends Controller
 {
@@ -26,6 +29,7 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+    protected $sectionConfig = [];
 
     /**
      * Create a new controller instance.
@@ -34,6 +38,24 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->sectionConfig = Section::get('login');
+        $guard = $this->sectionConfig['guard'];
+        $this->middleware("guest:{$guard}")->except('logout');
+        $this->redirectTo = $this->sectionConfig['redirect_login'];
+    }
+
+    public function showLoginForm()
+    {
+        return view($this->sectionConfig['show_login_form']);
+    }
+
+    public function loggedOut(Request $request)
+    {
+        return redirect($this->sectionConfig['logged_out']);
+    }
+
+    protected function guard()
+    {
+        return Auth::guard($this->sectionConfig['guard']);
     }
 }
