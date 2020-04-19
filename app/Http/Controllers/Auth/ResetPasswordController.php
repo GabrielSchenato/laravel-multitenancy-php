@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Auth;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Section;
 
 class ResetPasswordController extends Controller
 {
@@ -34,6 +36,24 @@ class ResetPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $config = Section::get('login');
+        $guard = $config['guard'];
+        $this->middleware("guest:{$guard}");
+        $this->redirectTo = $config['redirect_login'];
+    }
+
+    protected function guard()
+    {
+        return Auth::guard(\Section::get('login.guard'));
+    }
+
+    protected function rules()
+    {
+        $rule = \Section::getSection() == 'admin' ? 'is_admin' : 'is_user_tenant';
+        return  [
+            'token' => 'required',
+            'email' => "required|email|{$rule}",
+            'password' => 'required|confirmed|min:6'
+        ];
     }
 }
