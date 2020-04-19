@@ -1,4 +1,12 @@
-@extends('layouts.app')
+@php
+
+$layout = \Section::get('layout');
+$routeLogin = \Section::get('login.route_login');
+$routePasswordRequest = \Section::get('password.route_request');
+
+@endphp
+
+@extends($layout)
 
 @section('content')
 <div class="container">
@@ -8,7 +16,7 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route($routeLogin) }}">
                         @csrf
 
                         <div class="form-group row">
@@ -18,9 +26,9 @@
                                 <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
 
                                 @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
                                 @endif
                             </div>
                         </div>
@@ -32,9 +40,9 @@
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
 
                                 @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </span>
                                 @endif
                             </div>
                         </div>
@@ -57,10 +65,10 @@
                                     {{ __('Login') }}
                                 </button>
 
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
+                                @if (Route::has($routePasswordRequest))
+                                <a class="btn btn-link" href="{{ route($routePasswordRequest) }}">
+                                    {{ __('Forgot Your Password?') }}
+                                </a>
                                 @endif
                             </div>
                         </div>
