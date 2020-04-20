@@ -21,8 +21,7 @@ class CreateProductsTable extends Migration
             $table->decimal('price');
             $table->integer('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories');
-            $table->integer('company_id')->unsigned();
-            $table->foreign('company_id')->references('id')->on('companies');
+            $table->tenant();
             $table->timestamps();
         });
     }

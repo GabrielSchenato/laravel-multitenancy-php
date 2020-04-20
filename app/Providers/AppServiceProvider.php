@@ -26,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
             $user = User::whereEmail($value)->first();
             return $user && $user->isType(UserTenant::class);
         });
+        \Tenant::bluePrintMacros();
     }
 
     /**

@@ -17,8 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->increments('id');
             $table->uuid('uuid')->index();
             $table->string('name');
-            $table->integer('company_id')->unsigned();
-            $table->foreign('company_id')->references('id')->on('companies');
+            $table->tenant();
             $table->timestamps();
         });
     }
