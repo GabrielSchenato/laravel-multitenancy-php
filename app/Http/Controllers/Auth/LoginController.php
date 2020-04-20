@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Request;
 use \Section;
 
 class LoginController extends Controller
@@ -49,7 +48,7 @@ class LoginController extends Controller
         return view($this->sectionConfig['show_login_form']);
     }
 
-    public function loggedOut(Request $request)
+    public function loggedOut(\Illuminate\Support\Facades\Request $request)
     {
         return redirect($this->sectionConfig['logged_out']);
     }

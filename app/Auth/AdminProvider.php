@@ -11,6 +11,6 @@ class AdminProvider extends EloquentUserProvider
 
     public static function userOrNull($user)
     {
-        return $user && $user->isType(Admin::class) ? $user : null;
+        return $user && $user->containsType(Admin::class) ? $user : null;
     }
 }

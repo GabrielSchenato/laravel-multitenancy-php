@@ -20,11 +20,11 @@ class AppServiceProvider extends ServiceProvider
     {
         \Validator::extend('is_admin', function ($attribute, $value, $parameters, $validator) {
             $user = User::whereEmail($value)->first();
-            return $user && $user->isType(Admin::class);
+            return $user && $user->containsType(Admin::class);
         });
         \Validator::extend('is_user_tenant', function ($attribute, $value, $parameters, $validator) {
             $user = User::whereEmail($value)->first();
-            return $user && $user->isType(UserTenant::class);
+            return $user && $user->containsType(UserTenant::class);
         });
         \Tenant::bluePrintMacros();
     }
@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         ResetPassword::toMailUsing(function ($user, $token) {
-            $routeReset = route($user->isType(Admin::class) ? 'admin.password.reset' : 'app.password.reset', $token, false);
+            $routeReset = route($user->containsType(Admin::class) ? 'admin.password.reset' : 'app.password.reset', $token, false);
             return (new MailMessage)
                 ->subject(\Lang::get('Reset Password Notification'))
                 ->line(\Lang::get('You are receiving this email because we received a password reset request for your account.'))

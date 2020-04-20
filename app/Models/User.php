@@ -1,10 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * @property Admin $admin
+ * @property UserTenant $userTenant
+ */
 class User extends Authenticatable
 {
     use Notifiable;
@@ -43,15 +49,30 @@ class User extends Authenticatable
         return $user;
     }
 
-    public function isType($typeClass)
+    public function containsType($typeClass): bool
     {
-        return $this->userable instanceof $typeClass;
+        return self
+            ::query()
+            ->join('userables', 'userables.user_id', '=', 'users.id')
+            ->where('userable_type', $typeClass)
+            ->where('users.id', $this->id)
+            ->count() == 1;
     }
 
     public function fill(array $attributes)
     {
         !isset($attributes['password']) ?: $attributes['password'] = bcrypt($attributes['password']);
         return parent::fill($attributes);
+    }
+
+    public function getAdminAttribute()
+    {
+        return $this->admins->first();
+    }
+
+    public function getUserTenantAttribute()
+    {
+        return $this->userTenants->first();
     }
 
     public function admins()
