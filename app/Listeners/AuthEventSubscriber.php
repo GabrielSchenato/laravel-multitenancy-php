@@ -7,11 +7,39 @@ use Illuminate\Auth\Events\Logout;
 
 class AuthEventSubscriber
 {
-    public function onLogin(Login $events)
+    public function onLogin(Login $event)
     {
+        if (
+            \SectionGuard::hasGuardLogged($event->guard) ||
+            !\SectionGuard::hasAuthGuard($event->guard)
+        ) {
+            return;
+        }
+        $guards = \SectionGuard::exceptGuard($event->guard);
+        foreach ($guards as $guard) {
+            $provider = \Auth::guard($guard)->getProvider();
+            $providerClass = get_class($provider);
+            if ($providerClass::userOrNull($event->user)) {
+                \SectionGuard::addGuardsLogged($guard);
+                \Auth::guard($guard)->login($event->user);
+            }
+        }
     }
-    public function onLogout(Logout $events)
+    public function onLogout(Logout $event)
     {
+        if (
+            \SectionGuard::hasGuardLoggedOut($event->guard) ||
+            !\SectionGuard::hasAuthGuard($event->guard)
+        ) {
+            return;
+        }
+        $guards = \SectionGuard::exceptGuard($event->guard);
+        foreach ($guards as $guard) {
+            if (\Auth::guard($event->guard)->check()) {
+                \SectionGuard::addGuardsLoggedOut($guard);
+                \Auth::guard($guard)->logout();
+            }
+        }
     }
     public function subscribe($events)
     {

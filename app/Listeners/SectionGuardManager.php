@@ -13,6 +13,7 @@ class SectionGuardManager
     ];
 
     private $guardsLogged = [];
+    private $guardsLoggedOut = [];
 
     public function hasAuthGuard(string $guard): bool
     {
@@ -22,6 +23,11 @@ class SectionGuardManager
     public function hasGuardLogged(string $guard): bool
     {
         return in_array($guard, $this->guardsLogged);
+    }
+
+    public function hasGuardLoggedOut(string $guard): bool
+    {
+        return in_array($guard, $this->guardsLoggedOut);
     }
 
     public function exceptGuard(string $guard = null): array
@@ -42,5 +48,20 @@ class SectionGuardManager
     public function removeGuardsLogged(string $guard): void
     {
         Arr::forget($this->guardsLogged, $guard);
+    }
+
+    public function getGuardsLoggedOut(): array
+    {
+        return $this->guardsLoggedOut;
+    }
+
+    public function addGuardsLoggedOut(string $guard): void
+    {
+        $this->guardsLoggedOut[] = $guard;
+    }
+
+    public function removeGuardsLoggedOut(string $guard): void
+    {
+        Arr::forget($this->guardsLoggedOut, $guard);
     }
 }
