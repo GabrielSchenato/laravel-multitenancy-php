@@ -12,4 +12,9 @@ trait Uuid
             $obj->uuid = UuidUuid::uuid4();
         });
     }
+
+    public function getRouteKey()
+    {
+        return 'uuid';
+    }
 }

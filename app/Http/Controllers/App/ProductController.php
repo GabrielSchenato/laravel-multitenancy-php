@@ -23,7 +23,9 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        Product::create($request->all());
+        $categoryUuid = $request->get('category_uuid');
+        $category = Category::whereUuid($categoryUuid)->first();
+        Product::create($request->all() + ['category_id' => $category->id]);
         return redirect()->route('app.products.index');
     }
 
@@ -40,8 +42,9 @@ class ProductController extends Controller
 
     public function update(ProductRequest $request, Product $product)
     {
-        $product->fill($request->all());
-        $product->save();
+        $categoryUuid = $request->get('category_uuid');
+        $category = Category::whereUuid($categoryUuid)->first();
+        $product->update($request->all() + ['category_id' => $category->id]);
         return redirect()->route('app.products.index');
     }
 
