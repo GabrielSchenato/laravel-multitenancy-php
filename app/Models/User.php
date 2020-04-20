@@ -54,8 +54,13 @@ class User extends Authenticatable
         return parent::fill($attributes);
     }
 
-    public function userable()
+    public function admins()
     {
-        return $this->morphTo();
+        return $this->morphedByMany(Admin::class, 'userable');
+    }
+
+    public function userTenants()
+    {
+        return $this->morphedByMany(UserTenant::class, 'userable');
     }
 }

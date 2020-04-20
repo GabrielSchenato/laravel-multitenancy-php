@@ -11,11 +11,12 @@ class UserTenant extends Model
     public static function createUser(array $attributes)
     {
         $admin = self::create([]);
-        $admin->user()->create($attributes['user']);
+        $admin->users()->create($attributes['user']);
         return $admin;
     }
-    public function user()
+
+    public function users()
     {
-        return $this->morphOne(User::class, 'userable');
+        return $this->morphToMany(User::class, 'userable');
     }
 }

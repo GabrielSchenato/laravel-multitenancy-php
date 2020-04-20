@@ -15,13 +15,14 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        \Tenant::setTenant(Company::find(1));
         $users = factory(\App\Models\User::class, 1)
             ->make([
                 'email' => 'admin@user.com',
             ]);
         foreach ($users as $user) {
-            Admin::createUser([
-                'user' => $user->toArray() + ['password' => $this->password]
+            Admin::createUserAndTenant([
+                'user' => $this->userToArray($user)
             ]);
         };
 
@@ -32,7 +33,7 @@ class UsersTableSeeder extends Seeder
             ]);
         foreach ($users as $user) {
             UserTenant::createUser([
-                'user' => $user->toArray() + ['password' => $this->password]
+                'user' => $this->userToArray($user)
             ]);
         };
 
@@ -43,8 +44,13 @@ class UsersTableSeeder extends Seeder
             ]);
         foreach ($users as $user) {
             UserTenant::createUser([
-                'user' => $user->toArray() + ['password' => $this->password]
+                'user' => $this->userToArray($user)
             ]);
         };
+    }
+
+    private function userToArray($user)
+    {
+        return $user->toArray() + ['password' => $this->password];
     }
 }
