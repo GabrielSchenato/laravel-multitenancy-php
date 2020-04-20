@@ -33,7 +33,7 @@ class TenantManager
     /**
      * @return string
      */
-    public static function getTenantTable(): string
+    public function getTenantTable(): string
     {
         return self::$tenantTable;
     }
@@ -41,7 +41,7 @@ class TenantManager
     /**
      * @return string
      */
-    public static function getTenantField(): string
+    public function getTenantField(): string
     {
         return self::$tenantField;
     }
@@ -49,7 +49,7 @@ class TenantManager
     /**
      * @return Company
      */
-    public static function getTenantModel(): string
+    public function getTenantModel(): string
     {
         return self::$tenantModel;
     }
@@ -57,11 +57,16 @@ class TenantManager
     public function bluePrintMacros()
     {
         Blueprint::macro('tenant', function () {
-            $this->integer(TenantManager::getTenantField())
+            $this->integer(\Tenant::getTenantField())
                 ->unsigned();
-            $this->foreign(TenantManager::getTenantField())
+            $this->foreign(\Tenant::getTenantField())
                 ->references('id')
-                ->on(TenantManager::getTenantTable());
+                ->on(\Tenant::getTenantTable());
         });
+    }
+
+    public function ruleExists()
+    {
+        return "{$this->getTenantField()},{$this->getTenant()->id}";
     }
 }
